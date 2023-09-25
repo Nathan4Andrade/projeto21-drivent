@@ -34,7 +34,7 @@ async function findTicketType(id: number): Promise<TicketType> {
   });
 }
 
-async function create(data: CreateTicket) {
+async function create(data: CreateTicket): Promise<TicketResponse> {
   const createdTicket = await prisma.ticket.create({
     data: data,
   });
