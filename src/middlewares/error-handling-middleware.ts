@@ -64,6 +64,10 @@ export function handleApplicationErrors(
     });
   }
 
+  if (err.name === 'PaymentError') {
+    return res.status(httpStatus.PAYMENT_REQUIRED).send(err.message);
+  }
+
   /* eslint-disable-next-line no-console */
   console.error(err);
   res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
