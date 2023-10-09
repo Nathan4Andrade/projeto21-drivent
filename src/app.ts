@@ -28,7 +28,7 @@ app
   .use('/enrollments', enrollmentsRouter)
   .use('/tickets', ticketsRouter)
   .use('/payments', paymentsRouter)
-  .use('/hotels', hotelRouter)
+  .use('/hotels', hotelsRouter)
   .use('/booking', bookingRouter)
   .use(handleApplicationErrors);
 
