@@ -47,10 +47,53 @@ async function ticketProcessPayment(ticketId: number) {
   return result;
 }
 
+async function create(ticketId: number, enrollmentId: number) {
+  const ticket = await prisma.ticket.create({
+    data: {
+      enrollmentId: enrollmentId,
+      ticketTypeId: ticketId,
+      status: TicketStatus.RESERVED,
+    },
+  });
+  const tickedType = await prisma.ticketType.findFirst({
+    where: {
+      id: ticketId,
+    },
+  });
+
+  const result = {
+    id: ticket.id,
+    status: ticket.status.toString(),
+    ticketTypeId: ticket.ticketTypeId,
+    enrollmentId: ticket.enrollmentId,
+    createdAt: ticket.createdAt,
+    updatedAt: ticket.updatedAt,
+    TicketType: tickedType,
+  };
+
+  return result;
+}
+
+async function getTicket(userId: number) {
+  const ticket = await prisma.ticket.findFirst({
+    where: {
+      Enrollment: {
+        userId: userId,
+      },
+    },
+    include: {
+      TicketType: true,
+    },
+  });
+  return ticket;
+}
+
 export const ticketsRepository = {
   findTicketTypes,
   findTicketByEnrollmentId,
   createTicket,
   findTicketById,
   ticketProcessPayment,
+  getTicket,
+  create,
 };
